@@ -1,0 +1,7 @@
+#lang racket
+
+(define (vector_angle ax ay bx by) (acos (/ (+ (* ax bx) (* ay by))
+                                    (* (sqr (+ (expt bx 2) (expt by 2)))
+                                    (sqr (+ (expt ax 2) (expt ay 2)))))))
+
+(vector_angle 0 1 1 1)
