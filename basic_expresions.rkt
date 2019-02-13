@@ -81,8 +81,67 @@
 
 ;EJ 8
 (writeln "-------------------EJ 8-------------------")
-(define (traductor_notas a)
+(define (traductor_notas a)  
+(cond
+ [(< a 5) (writeln "suspoenso")]
+ [(< a 7) (writeln "aprobado")]
+ [(< a 9) (writeln "notable")]
+ [(< a 10) (writeln "sobresaliente")]
+ [(< a +inf.0) (writeln "matricula")]))
+(write "1 --> ")
+(traductor_notas 1)
+(write "6 --> ")
+(traductor_notas 6)
+(write "8 --> ")
+(traductor_notas 8)
+(write "9 --> ")
+(traductor_notas 9)
+(write "10 --> ")
+(traductor_notas 10) 
+
+;EJ 9
+(writeln "-------------------EJ 9-------------------")
+(define (lanzar_dado) (+ 1(random 6)))
+(lanzar_dado)
+
+;EJ 10
+(writeln "-------------------EJ 10------------------")
+(define (x_vertex a b) (/ (- b) (* 2 a)))
+(define (y_cuadratic a b c x) (+ (* a (expt x 2)) (* b x) c))
+(define (count_cuadratic_solutions a b c)
+  (if (> a 0)
+      (cond
+        [(> (y_cuadratic a b c (x_vertex a b)) 0) 0]
+        [(= (y_cuadratic a b c (x_vertex a b)) 0) 1]
+        [(< (y_cuadratic a b c (x_vertex a b)) 0) 2])
+      (cond
+        [(> (y_cuadratic a b c (x_vertex a b)) 0) 2]
+        [(= (y_cuadratic a b c (x_vertex a b)) 0) 1]
+        [(< (y_cuadratic a b c (x_vertex a b)) 0) 0])))
+
+(count_cuadratic_solutions 1/4 2 3)
+
+;EJ 11
+(writeln "-------------------EJ 11------------------")
+(define (es_positivo a) (> a 0))
+
+;EJ 12
+(writeln "-------------------EJ 12------------------")
+(define (es_numero_positivo a) (and (number? a) (> a 0)))
+
+;EJ 13
+(writeln "-------------------EJ 13------------------")
+(define (es_numero_entero_positivo a) (and (number? a) (integer? a) (> a 0)))
+
+;EJ 14
+(writeln "-------------------EJ 14------------------")
+(define (polinomio_cubico a b c d x)
+  (+ (* a (expt x 3))
+     (* b (expt x 2))
+     (* c x)
+     d))
+(define (polinomio_cubico_horner a b c d x) (+ d (* x (+ c (* x (+ b (* x a)))))))
+
+
+
   
-;(cons
-; [(< a 5) (writeln "suspoenso")]
-; [(> a 5) (writeln "suspoenso")]))
