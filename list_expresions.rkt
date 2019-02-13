@@ -55,4 +55,34 @@
 (define (suma_lista l) (if (null? l) 0 (+ (car l) (suma_lista (cdr l)))))
 
 
+;EJ 11
+(writeln "-------------------EJ 11-------------------")
+(define (cuadrados_lista l) (if (null? l) 0 (+ (expt (car l) 2) (cuadrados_lista (cdr l)))))
+
+;EJ 12
+(writeln "-------------------EJ 12-------------------")
+(define (is_aritmetic l) (if (> 3 (length l)) #t (and (= (- (first l) (second l))(- (second l) (third l))) (is_aritmetic (cdr l)))))
+(define (is_geometric l) (if (> 3 (length l)) #t (and (= (/ (first l) (second l))(/ (second l) (third l))) (is_geometric (cdr l)))))
+(define (is_progresion l) (if (is_aritmetic l) (if (is_geometric l) "aritmetica y geometrica" 'aritmetica) (if (is_geometric l) 'geometrica "ni geometrica ni aritmetica")))
+
+;EJ 13
+(writeln "-------------------EJ 13-------------------")
+(define (random_in l) (if (= 0 (length l)) 0 (random (length l))))
+(define (delete_element l n) (if (= n 0) (cdr l) (cons (car l) (delete_element (cdr l) (- n 1)))))
+(define (_distribuir monitores jugadores index_jugador index_monitor save) (if (null? jugadores) '() (append save (cons (list (list-ref monitores index_monitor) (list-ref jugadores index_jugador))
+                                                                              (_distribuir monitores (delete_element jugadores index_jugador) (random_in (cdr jugadores))(remainder (+ 1 index_monitor)(length monitores))save)))))
+(define (distribuir monitores jugadores) (_distribuir monitores jugadores (random_in jugadores) 0 '()))
+
+;EJ 14
+(writeln "-------------------EJ 14-------------------")
+
+
+;EJ 15
+(writeln "-------------------EJ 15-------------------")
+(define (reverse_string str)(list->string (reverse (string->list str))))
+
+;EJ 16
+(writeln "-------------------EJ 16-------------------")
+(define (palindromo str) (if (> 2 (string-length str)) #t (and (eq? (car (string->list str)) (car (reverse (string->list str)))) (palindromo (list->string(cdr (reverse(cdr (string->list str)))))))))
+
 
