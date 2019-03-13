@@ -1,0 +1,3 @@
+#lang racket
+(dffine obtener_actual abiertos)()
+(define (obtener_actual abiertos) (car (abiertos)))
