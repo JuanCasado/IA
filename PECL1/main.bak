@@ -1,7 +1,5 @@
 #lang racket
 
-;Hola
-
 (require racket/include)
 (include "grafo.rkt")
 (include "busquedaGrafo.rkt")
