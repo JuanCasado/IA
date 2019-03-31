@@ -22,3 +22,4 @@
 (insertar_siguientes_anchura (obtenerSiguientes ciudades "Madrid") '())
 (insertar_siguientes_anchura (obtenerSiguientes ciudades "Sevilla") '(("Valladolid" 193) ("Bilbao" 395) ("Zaragoza" 325) ("Barcelona" 296)))
 (obtenerPrimeroAbiertos '(("Valladolid" 193) ("Bilbao" 395) ("Zaragoza" 325) ("Barcelona" 296) ("Jaén" 242) ("Granada" 256) ("Sevilla" 125)))
+(eliminarPrimeroAbiertos '(("Valladolid" 193) ("Bilbao" 395) ("Zaragoza" 325) ("Barcelona" 296) ("Jaén" 242) ("Granada" 256) ("Sevilla" 125)))
