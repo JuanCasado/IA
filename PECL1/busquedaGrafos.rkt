@@ -1,25 +1,38 @@
 #lang racket
-(require "grafo.rkt")
-;(include "busquedaGrafos.rkt")
-(require "busquedaAnchura.rkt")
+(provide (all-defined-out))
 
-(define (obtenerSiguientes ciudades ciudad)
+(define (obtenerSiguientes ciudad ciudades)
   (cond
     [(null? ciudades) '()]
     [(equal? ciudad (caar ciudades)) (cdar ciudades)]
-    [else (obtenerSiguientes (cdr ciudades) ciudad)]
+    [else (obtenerSiguientes ciudad (cdr ciudades))]
   )
 )
 
+(define (eliminarCerrados abiertos cerrados)
+  (define (eliminarCerrado abiertos cerrado)
+    (cond
+      [(null? abiertos) '()]
+      [(string=? (obtenerUltimo (car abiertos)) cerrado) (cdr abiertos)]
+      [else (cons (car abiertos) (eliminarCerrado (cdr abiertos) cerrado))]
+    )
+  )
+  
+  (cond
+    [(null? cerrados) abiertos]
+    [else (eliminarCerrados (eliminarCerrado abiertos (car cerrados)) (cdr cerrados))]
+  )
+)
 (define (obtenerPrimeroAbiertos abiertos) (car abiertos))
+
+(define (aumentarCamino camino ciudad)
+  (reverse (cons (+ (car (reverse camino)) (cadr ciudad)) (cons (car ciudad) (cdr (reverse camino))))))
 
 (define (eliminarPrimeroAbiertos abiertos) (cdr abiertos))
 
+(define (obtenerUltimo l) (cadr (reverse l)))
 
+(define (ha_finalizado objetivo actual)
+  (string=? (car (reverse objetivo)) (obtenerUltimo actual))
+)
 
-
-#| PRUEBAS |#
-(insertar_siguientes_anchura (obtenerSiguientes ciudades "Madrid") '())
-(insertar_siguientes_anchura (obtenerSiguientes ciudades "Sevilla") '(("Valladolid" 193) ("Bilbao" 395) ("Zaragoza" 325) ("Barcelona" 296)))
-(obtenerPrimeroAbiertos '(("Valladolid" 193) ("Bilbao" 395) ("Zaragoza" 325) ("Barcelona" 296) ("Jaén" 242) ("Granada" 256) ("Sevilla" 125)))
-(eliminarPrimeroAbiertos '(("Valladolid" 193) ("Bilbao" 395) ("Zaragoza" 325) ("Barcelona" 296) ("Jaén" 242) ("Granada" 256) ("Sevilla" 125)))
