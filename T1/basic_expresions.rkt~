@@ -1,4 +1,0 @@
-;ejercios de expresiones básicas clase
-(define (expresion1 x) (- (+ (/ (* 2 x) 5) 3) 6))
-(define (expresion2 y) (+ 4 (* 5 y)))
-(define (expresion3 t y x z) (+ (+ z 1) (* t (* x (log y)))))
