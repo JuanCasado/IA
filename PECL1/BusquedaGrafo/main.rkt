@@ -5,6 +5,14 @@
 (require "busquedaAnchura.rkt")
 (require "busquedaProfundidad.rkt")
 (require "busquedaPrimero.rkt")
+(require "gra.rkt")
+
+(define (pintaBusqueda objetivo ciudades tipo_busqueda)
+  (let ((path (inicioBusqueda objetivo ciudades tipo_busqueda)))
+  (show (nextNumber) ciudades path)
+    path
+  )
+)
 
 (define (inicioBusqueda objetivo ciudades tipo_busqueda)
   (cond
