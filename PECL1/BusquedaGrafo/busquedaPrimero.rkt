@@ -1,5 +1,7 @@
 #lang racket
 (provide (all-defined-out))
+
+;Los siguentes se insertan delante de la lista de abiertos
 (define (insertar_siguientes_primero siguientes abiertos)
   (define (insertar_ordenado siguiente abiertos)
     (cond
