@@ -25,8 +25,14 @@
 )
 (define (obtenerPrimeroAbiertos abiertos) (car abiertos))
 
-(define (aumentarCamino camino ciudad)
-  (reverse (cons (+ (car (reverse camino)) (cadr ciudad)) (cons (car ciudad) (cdr (reverse camino))))))
+(define (aumentarCaminos siguientes actual)
+  (define (aumentarCamino camino actual)
+    (reverse (cons (+ (car (reverse camino)) (car (reverse actual))) (reverse (append (reverse (cdr (reverse actual))) (reverse (cdr (reverse camino))))))))
+  (cond
+    [(null? siguientes) '()]
+    [else (cons (aumentarCamino (car siguientes) actual) (aumentarCaminos (cdr siguientes) actual))]
+  )
+)
 
 (define (eliminarPrimeroAbiertos abiertos) (cdr abiertos))
 

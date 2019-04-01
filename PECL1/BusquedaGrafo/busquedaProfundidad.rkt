@@ -1,5 +1,5 @@
 #lang racket
-
+(provide (all-defined-out))
 (define (insertar_siguientes_profundidad siguientes abiertos)
   (if (null? siguientes) abiertos
       (let ((reverse_siguientes (reverse siguientes)))
