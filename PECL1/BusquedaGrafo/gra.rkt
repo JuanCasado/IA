@@ -10,7 +10,7 @@
 (define (linkCiudad ciudad ciudades)
   (cond
     [(null? ciudades) '()]
-    [else (cons (reverse(cons ciudad (car ciudades))) (linkCiudad ciudad (cdr ciudades)))]
+    [else (cons (reverse (cons (caar ciudades) (cons ciudad (cdar ciudades)))) (linkCiudad ciudad (cdr ciudades)))]
   )
 )
 
@@ -35,8 +35,8 @@
 (define (setColors ciudades path)
   (cond
     [(null? ciudades) ]
-    [(esCamino (car ciudades) path) (hash-set! ht (car ciudades) 3)(cons (list (car ciudades) 3) (setColors (cdr ciudades) path))]
-    [else (hash-set! ht (car ciudades) 1) (cons (list (car ciudades) 1) (setColors (cdr ciudades) path))]
+    [(esCamino (car ciudades) path) (hash-set! ht (car ciudades) 1)(cons (list (car ciudades) 1) (setColors (cdr ciudades) path))]
+    [else (hash-set! ht (car ciudades) 3) (cons (list (car ciudades) 3) (setColors (cdr ciudades) path))]
   )
 )
 
