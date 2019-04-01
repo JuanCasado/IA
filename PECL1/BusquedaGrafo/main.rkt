@@ -4,30 +4,31 @@
 (require "busquedaGrafos.rkt")
 (require "busquedaAnchura.rkt")
 (require "busquedaProfundidad.rkt")
+(require "busquedaPrimero.rkt")
 
 (define (inicioBusqueda objetivo ciudades tipo_busqueda)
   (cond
-    [(string=? tipo_busqueda "anchura")(busquedaAnchuraInicio objetivo ciudades
+    [(string=? tipo_busqueda "anchura")(busquedaInicio objetivo ciudades
+               (lambda (siguientes abiertos) (insertar_siguientes_anchura siguientes abiertos)))]
+    [(string=? tipo_busqueda "profundidad")(busquedaInicio objetivo ciudades
                (lambda (siguientes abiertos) (insertar_siguientes_profundidad siguientes abiertos)))]
-    [(string=? tipo_busqueda "profundidad")(write "busqueda anchura")]
-    [(string=? tipo_busqueda "primero_mejor")(write "busqueda anchura")]
+    [(string=? tipo_busqueda "primero")(busquedaInicio objetivo ciudades
+               (lambda (siguientes abiertos) (insertar_siguientes_primero siguientes abiertos)))]
   )
 )
 
-(define (busquedaAnchuraInicio objetivo ciudades algoritmo_busqueda)
-  (define (busquedaAnchura objetivo ciudades abiertos cerrados algoritmo_busqueda)
+(define (busquedaInicio objetivo ciudades algoritmo_insercion)
+  (define (busqueda objetivo ciudades abiertos cerrados algoritmo_insercion)
     (let* ((actual (obtenerPrimeroAbiertos abiertos)))
       (if
          (ha_finalizado objetivo actual) actual
          (let* ((siguientes (aumentarCaminos (eliminarCerrados (obtenerSiguientes (obtenerUltimo actual) ciudades) cerrados) actual))
                 (abiertos (eliminarPrimeroAbiertos abiertos))
-                (abiertos (algoritmo_busqueda siguientes abiertos))
+                (abiertos (algoritmo_insercion siguientes abiertos))
                 (cerrados (cons (obtenerUltimo actual) cerrados)))
-            (busquedaAnchura objetivo ciudades abiertos cerrados) algoritmo_busqueda)
+            (busqueda objetivo ciudades abiertos cerrados algoritmo_insercion))
          )
       )
     )
-  (busquedaAnchura objetivo ciudades (list(list (car objetivo) 0)) '() algoritmo_busqueda)
+  (busqueda objetivo ciudades (list(list (car objetivo) 0)) '() algoritmo_insercion)
 )
-
-;(inicioBusqueda '("Oviedo" "Valencia") ciudades "anchura")

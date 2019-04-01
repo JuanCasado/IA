@@ -17,7 +17,7 @@
                ("Albacete" ("Madrid" 251) ("Valencia" 241) ("Murcia" 150)) 
                ("Jaén" ("Madrid" 355) ("Granada" 99) ("Sevilla" 242)) 
                ("Granada" ("Murcia" 278) ("Jaén" 99) ("Sevilla" 256)) 
-               ("Sevilla" ("Jaén" 242) ("Granada" 256) ("Cádiz" 125)) 
+               ("Sevilla" ("Jaén" 242) ("Granada" 256) ("Sevilla" 125)) 
                ("Cádiz" ("Sevilla" 125)) 
               )
   )
