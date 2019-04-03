@@ -13,7 +13,7 @@
 (define nextNumber (numberIncrementer))
 
 ;Transforma el archivo .dot a una imagen
-(define dot-command "dot -Tpng ~a >~a")
+(define dot-command "/usr/local/bin/dot -Tpng ~a >~a")
 
 ;Tabla para almacenar los colores del grafo
 (define ht (make-hash))
@@ -65,8 +65,8 @@
   (cityColors c p)
   ;Creación del archivo dot
   (let ([dot-string (graphviz g #:colors ht)]
-        [dot-file (make-temporary-file "./temporal~a.dot")]
-        [png-file (make-temporary-file "./temporal~a.png")])
+        [dot-file (make-temporary-file "temporal~a.dot")]
+        [png-file (make-temporary-file "temporal~a.png")])
     (display-to-file dot-string dot-file #:exists 'replace)
     (system (format dot-command dot-file png-file))
     png-file))
