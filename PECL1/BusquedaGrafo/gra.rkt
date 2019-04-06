@@ -13,7 +13,14 @@
 (define nextNumber (numberIncrementer))
 
 ;Transforma el archivo .dot a una imagen
-(define dot-command "dot -Tpng ~a >~a")
+(define dot-command
+  (let ((os (system-type 'os)))
+    (cond
+      [(equal? os 'windows) "dot -Tpng ~a >~a""dot -Tpng ~a >~a"]
+      [else "/usr/local/bin/dot -Tpng ~a >~a"]
+    )
+  )
+)
 
 ;Tabla para almacenar los colores del grafo
 (define ht (make-hash))
