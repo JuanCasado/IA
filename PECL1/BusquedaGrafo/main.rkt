@@ -8,23 +8,22 @@
 (require "gra.rkt")                  ;Para pintar el grado
 (require "manejadorArchivos.rkt")    ;Para leer entrada de datos de un archivo
 
+
+
 ;Interfaz que permite pintar el grafo
 (define (pintaBusqueda objetivo ciudades tipo_busqueda)
-  (let ((path (inicioBusqueda objetivo ciudades tipo_busqueda)))
-  (show (nextNumber) ciudades path)
-    path
-  )
-)
-
-(define (pintaBusquedaTXT objetivo archivo tipo_busqueda)
-  (let ((path (inicioBusqueda objetivo (leerArchivo archivo) tipo_busqueda)))
-  (show (nextNumber) ciudades path)
+  (let* (
+        (espacio_bisqueda (if (string? ciudades) (leerArchivo ciudades) ciudades))
+        (path (inicioBusqueda objetivo espacio_bisqueda tipo_busqueda))
+       )
+  (show (nextNumber) espacio_bisqueda path)
     path
   )
 )
 
 ;Interfaz que prepara los datos iniciales del algoritmo de búsqueda elegido
 (define (inicioBusqueda objetivo ciudades tipo_busqueda)
+  (let ((ciudades (if (string? ciudades) (leerArchivo ciudades) ciudades)))
   (time(cond
     [(string=? tipo_busqueda "anchura")(busquedaInicio objetivo ciudades
                (lambda (siguientes abiertos) (insertar_siguientes_anchura siguientes abiertos)))]
@@ -32,7 +31,7 @@
                (lambda (siguientes abiertos) (insertar_siguientes_profundidad siguientes abiertos)))]
     [(string=? tipo_busqueda "primero")(busquedaInicio objetivo ciudades
                (lambda (siguientes abiertos) (insertar_siguientes_primero siguientes abiertos)))]
-  ))
+  )))
 )
 
 ;Algoritmo de Búsqueda basado en ACTUAL SIGUENTES ABIERTOS CERRADOS
