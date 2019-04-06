@@ -6,9 +6,17 @@
 (require "busquedaProfundidad.rkt")  ;Funciones exclusivas de la búsqueda en Profundidad
 (require "busquedaPrimero.rkt")      ;Funciones exclusivas de la búsqueda Optimal/Primero el mejor
 (require "gra.rkt")                  ;Para pintar el grado
+(require "manejadorArchivos.rkt")    ;Para leer entrada de datos de un archivo
 
 ;Interfaz que permite pintar el grafo
 (define (pintaBusqueda objetivo ciudades tipo_busqueda)
+  (let ((path (inicioBusqueda objetivo ciudades tipo_busqueda)))
+  (show (nextNumber) ciudades path)
+    path
+  )
+)
+
+(define (pintaBusqueda objetivo archivo tipo_busqueda)
   (let ((path (inicioBusqueda objetivo ciudades tipo_busqueda)))
   (show (nextNumber) ciudades path)
     path
