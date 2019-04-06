@@ -16,7 +16,7 @@
 (define dot-command
   (let ((os (system-type 'os)))
     (cond
-      [(equal? os 'windows) "dot -Tpng ~a >~a""dot -Tpng ~a >~a"]
+      [(equal? os 'windows) "dot -Tpng ~a >~a"]
       [else "/usr/local/bin/dot -Tpng ~a >~a"]
     )
   )
