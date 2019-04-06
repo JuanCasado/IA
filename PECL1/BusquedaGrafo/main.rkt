@@ -16,8 +16,8 @@
   )
 )
 
-(define (pintaBusqueda objetivo archivo tipo_busqueda)
-  (let ((path (inicioBusqueda objetivo ciudades tipo_busqueda)))
+(define (pintaBusquedaTXT objetivo archivo tipo_busqueda)
+  (let ((path (inicioBusqueda objetivo (leerArchivo archivo) tipo_busqueda)))
   (show (nextNumber) ciudades path)
     path
   )
