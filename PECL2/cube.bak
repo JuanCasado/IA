@@ -4,7 +4,7 @@
 (define python-path
   (let ((os (system-type 'os)))
     (cond
-      [(equal? os 'windows) "U:\\Python\\Python IDE\\python.exe"]
+      [(equal? os 'windows) "C:\\Python26\\python.exe"]
       [else "/usr/bin/python"]
     )
   )
