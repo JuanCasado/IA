@@ -146,9 +146,9 @@
 (define (nextChild nodo index)
   (let* [
           (limity (+ (getX nodo) (getY nodo)))
-          (x (if (<= index (getX nodo)) index (getX nodo)))
-          (y (if (and (> index (getX nodo)) (<= index limity)) (- index (getX nodo)) (getY nodo)))
-          (z (if (> index limity) (- index limity) (getZ nodo)))
+          (x (if (< index (getX nodo)) index (getX nodo)))
+          (y (if (and (>= index (getX nodo)) (< (+ index 1) limity)) (- (+ index 1) (getX nodo)) (getY nodo)))
+          (z (if (>= (+ index 1) limity) (- (+ index 2) limity) (getZ nodo)))
           (alpha (getAlpha nodo))
           (beta (getBeta nodo))
          ]
