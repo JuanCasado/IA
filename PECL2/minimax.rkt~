@@ -26,12 +26,13 @@
 )
 ;Genera todos los hijos de un nodo
 (define (createChildren nodo)
-  (define (_createChilds nodo index)
-    (if (< index 1) '()
-        (cons (nextChild nodo index) (_createChilds nodo (- index 1)))
+  (define (_creteChilds nodo index)
+    (if (< index 1)
+        nodo
+        (_creteChilds (addChild nodo (nextChild nodo index)) (- index 1))
     )
   )
-  (_createChilds nodo (getChildCount nodo))
+  (_creteChilds nodo (getChildCount nodo))
 )
 
 ;Devuelve si un hijo es o no un nodo hoja
@@ -39,23 +40,12 @@
   (= 0 (getChildCount nodo))
 )
 
-(define (update nodo)
-  (define (update-max nodo)
-    (let [(val (min (getW nodo) (getAlpha nodo)))]
-      (setAlpha (setW nodo val) val))
-  )
-  (define (update-min nodo)
-    (let [(val (min (getW nodo) (getBeta nodo)))]
-      (setBeta (setW nodo val) val))
-  )
-  (define (update-leaf nodo)
-    (define (value nodo) (if (getType nodo) 1 -1))
-    (setW nodo (value nodo))
-  )
-  (if (isLeaf nodo)
-      (update-leaf nodo)
-      (if (getType nodo) (update-max nodo) (update-min nodo))
-  )
+;Aplica el algoritmo Minimax
+(define (minimax nodoRaiz)
+  (if (isLeaf nodoRaiz)
+      0
+      (minimax (getChildIndex (createChildren nodoRaiz) 1))
+   )
 )
 
 

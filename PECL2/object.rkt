@@ -10,8 +10,7 @@
 (define iBeta     4)
 (define iWeight   5)
 (define iType     6)
-(define iChildren 7)
-(define lenNodo   7)
+(define lenNodo   6)
 ;Obtener un elemento de una lista en una posicion dada
 (define (get list index)
   (cond
@@ -101,38 +100,17 @@
 ;Devuelve el tipo (MAX o MIN) de un nodo
 (define (getType nodo) (get nodo iType))
 
-(define (addChild nodo nodoHijo)
-  (set nodo (reverse (cons nodoHijo (reverse (get nodo iChildren)))) iChildren)
-)
-
 ;Devuelve cuantos hijos tiene un nodo
 (define (getChildAmount nodo)
   (length (get nodo iPath))
 )
 
-;Obtiene un hijo ya creado dependiendo del indice dado
-(define (getChildIndex nodo index)
-  (get (get nodo iChildren) index)
-)
-
-;Obtiene un hijo ya creado dependiendo de la id dada
-(define (getChildId nodo id)
-  (define (_getChildId ChildList id)
-    (cond
-      [(empty? ChildList) "Las has liado chaval en getChildId"]
-      [(string=? (getId(car ChildList)) id) (car ChildList)]
-      [else  (_getChildId (cdr ChildList) id)]
-    )
-  )
-  (_getChildId (get nodo iChildren) id)
-)
-
 ;Generador de hijos
 (define (newChild x y z alpha beta tipo)
-  (list (list x y z) '() alpha beta 0 tipo '())
+  (list (list x y z) '() alpha beta 0 tipo)
 )
 (define (rootChild x y z tipo)
-  (list (list x y z) '() -inf.0 +inf.0 0 tipo '())
+  (list (list x y z) '() -inf.0 +inf.0 0 tipo)
 )
 
 ;Pinta un nodo
