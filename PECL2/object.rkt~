@@ -1,6 +1,6 @@
 #lang racket
 
-(define a '("id1" (1 2 3) 333 55 8 #f '(("id2" (4 9) 666 99 7 #t '())) ("id3" (8) 373 575 98 #f '())))))
+(define a '("id" (1 2 3) 333 55 8 #f '()))
 (define posPath 2)
 
 ;Devuelve la id de un nodo
