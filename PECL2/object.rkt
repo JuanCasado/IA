@@ -21,11 +21,11 @@
   )
 )
 ;Poner un elemento en una lista en una posicion dada
-(define (put list elem index)
+(define (set list elem index)
   (cond
     [(empty? list) elem]
     [(= 1 index) (cons elem (cdr list))]
-    [else (cons (car list) (put (cdr list) elem (- index 1)))]
+    [else (cons (car list) (set (cdr list) elem (- index 1)))]
    )
 )
 ;Quitar un elemento en una lista en una posicion dada
@@ -36,8 +36,12 @@
     [else (cons (car list) (remove (cdr list) (- index 1)))]
    )
 )
-(define (set list elem index)
-  (put (remove list index) elem index)
+(define (put list elem index)
+  (cond
+    [(empty? list) elem]
+    [(= 1 index) (cons elem list)]
+    [else (cons (car list) (put (cdr list) elem (- index 1)))]
+   )
 )
 (define (establish list elem index)
   (if (< (length list) lenNodo)
@@ -98,7 +102,7 @@
 (define (getType nodo) (get nodo iType))
 
 (define (addChild nodo nodoHijo)
-  (set nodo (list (reverse (cons nodoHijo (reverse (get nodo iChildren))))) iChildren)
+  (set nodo (reverse (cons nodoHijo (reverse (get nodo iChildren)))) iChildren)
 )
 
 ;Devuelve cuantos hijos tiene un nodo
