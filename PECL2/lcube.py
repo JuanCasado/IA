@@ -1,6 +1,3 @@
-
-import sys
-
 def cuboid(x,y,z):
     t = {(n,m):' ' for n in range(3+x+z) for m in range(3+y+z)}
     xrow = ['+'] + ['-'  for i in range(x)] + ['+']
@@ -14,8 +11,7 @@ def cuboid(x,y,z):
         t[(k,1+y+k)] = t[(1+x+k,1+y+k)] = t[(1+x+k,k)] = ch
     return '\n'.join(''.join(t[(n,m)] for n in range(3+x+z)).rstrip() for m in reversed(range(3+y+z)))
 
-def format (str):
-  return tuple(str.strip().replace('#','').replace('"','').replace("'",'').replace("%",'').replace('(', '').replace(')','').replace(',',' ').split(' '))
 
 if __name__ == '__main__':
-  print(cuboid(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3])))
+    import sys
+    print(cuboid(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3])))
