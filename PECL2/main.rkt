@@ -5,11 +5,12 @@
 
 (define juego
  	(define (ganador nodo) 
- 	 	(if (getType nodo) ())
- 	) 
+ 	 	(if (getType nodo) ("Ha ganado MAX")("Ha ganado MIN"))
+ 	)
  	(define (bucle-juego nodo)
  	  	(if (isLeaf nodo)
- 	  		
+ 	  		( )
+                        ()
  	  		;NO -> JUGAR
 		 	  	;OBTENER SIGUIENTE ESTADO DE LA PARTIDA
 			 	  	;SI le toca juar al usuario -> PEDIR ACCION AL USUSARIO
