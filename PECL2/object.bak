@@ -1,7 +1,9 @@
 #lang racket
-(provide (all-defined-out))
 (require "cube.rkt")
 
+(define a '((3 4 5) ((3 4 5) (3 4 5) (3 4 5)) 333 55 8 #f (("id2" ((3 4 5) (3 4 5)) 666 99 7 #t ()) ("id3" ((3 4 5)) 373 575 98 #f ()))))
+(define b '((8 6 3) ((3 4 5) (3 4 5) (3 4 5)) 333 55 8 #f ()))
+(define c '((1 1 1) () 6 99 7 #t ()))
 
 ;POSICIONES DE LOS ELEMENTOS
 (define iId       1)
@@ -15,7 +17,7 @@
 ;Obtener un elemento de una lista en una posicion dada
 (define (get list index)
   (cond
-    [(empty? list) "Las has liado chaval en get"]
+    [(empty? list) "Las has liado chaval"]
     [(= 1 index) (car list)]
     [else  (get (cdr list) (- index 1))]
   )
@@ -115,7 +117,7 @@
 (define (getChildId nodo id)
   (define (_getChildId ChildList id)
     (cond
-      [(empty? ChildList) "Las has liado chaval en getChildId"]
+      [(empty? ChildList) "Las has liado chaval"]
       [(string=? (getId(car ChildList)) id) (car ChildList)]
       [else  (_getChildId (cdr ChildList) id)]
     )
@@ -134,4 +136,32 @@
 ;Pinta un nodo
 (define (draw nodo)
   (lcube (getX nodo) (getY nodo) (getZ nodo))
+)
+
+;Devuelve cuantos hijos se pueden generar desde un nodo
+(define (getChildCount nodo)
+  (+ (getNX nodo) (getNY nodo) (getNZ nodo))
+)
+;Genera el siguiente hijo dependiendo de la cantidad de hijos ya generados
+(define (nextChild nodo index)
+  (let* [
+          (limity (+ (getX nodo) (getY nodo)))
+          (x (if (< index (getX nodo)) index (getX nodo)))
+          (y (if (and (>= index (getX nodo)) (< (+ index 1) limity)) (- (+ index 1) (getX nodo)) (getY nodo)))
+          (z (if (>= (+ index 1) limity) (- (+ index 2) limity) (getZ nodo)))
+          (alpha (getAlpha nodo))
+          (beta (getBeta nodo))
+         ]
+    (putPath (newChild x y z alpha beta (not (getType nodo))) (cons (getId nodo) (get nodo iPath)))
+  )
+)
+;Genera todos los hijos de un nodo
+(define (createChildren nodo)
+  (define (_creteChilds nodo index)
+    (if (< index 1)
+        nodo
+        (_creteChilds (addChild nodo (nextChild nodo index)) (- index 1))
+    )
+  )
+  (_creteChilds nodo (getChildCount nodo))
 )
