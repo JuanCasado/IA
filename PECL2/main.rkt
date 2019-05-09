@@ -13,6 +13,7 @@
       (string-downcase(read-line (current-input-port)))
 )
 
+<<<<<<< HEAD
 (define (remove node where ammout)
   (cond
     [(string=? where "x") (rootChild (-(getX node) ammout) (getY node) (getZ node))]
