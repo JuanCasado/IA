@@ -1,0 +1,39 @@
+1. LA FUNCION TOMA UN NODO
+ES HOJA?
+	SI: RETORNAR HIJO EVALUADO
+	NO: 2 CON LOS HIJOS DEL NODO
+
+2. LA FUNCION TOMA UN NODO PADRE Y SU  LISTA DE NODOS HIJO
+LA LISTA DE HIJOS ESTÁ VACIA?
+	SI: RETORNAR NODO PADRE ACTUALIZADO
+	NO: 1 CON EL PRIMER HIJO
+	    ACTUALIZAR NODO PADRE
+	    - ACTUALIZAR ALFA BETA DE LOS HIJOS -
+	    2 CON RESTO HIJOS
+
+--------------------------------------------------------------------------------------------------------------------------------------
+1.Es un nodo hoja?
+	SI RETORNAR QUIEN GANA EN ESE NODO (@ valor del nodo)
+	NO:
+2.		Podemos generar más hijos desde el nodo?
+			SI:
+				Generar el (# siguente hijo) del (! nodo actual)		
+				Llamada recursiva a 1 (# con el siguente hijo) --> Obtenemos quien gana en esa rama (@ valor del nodo)
+				Actualizar el (! nodo actual) con el (@ valor obtenido) en la rama
+				Llamada recursiva a 2
+			NO RETORNAR EL VALOR ACTUALIZADO DEL (! NODO ACTUAL)
+
+for # in ! : # --> @ 
+
+Cada nodo debe tener:
+ - ID.		 	(x,y,z)
+ - Tipo de nodo 	(MIN o MAX)
+ - Valor del nodo	(quien gana si va por esa rama)
+ - Valor alpha.		(empieza siendo -inf y converge hacia valores mayores; SOLO ACTUALIZADO POR NODOS MAX)
+ - Valor beta.		(empieza siendo +inf y converge hacia valores menores; SOLO ACTUALIZADO POR NODOS MIN)
+ - Mejor hijo.		(x,y,z)
+
+Para pintar un nodo --> se hace a partir de su ID
+Para pintar el árbol de nodos --> se hace a partir de la genración de hijos en formato (PARDRE --> HIJO)
+Puede escribirse en un fichero y leerse a posteriory
+

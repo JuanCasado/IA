@@ -3,9 +3,6 @@
 (require "object.rkt")
 
 
-
-
-
 ;Devuelve cuantos hijos se pueden generar desde un nodo
 (define (getChildCount nodo)
   (+ (getNX nodo) (getNY nodo) (getNZ nodo))
@@ -21,7 +18,7 @@
           (alpha (getAlpha nodo))
           (beta (getBeta nodo))
          ]
-    (putPath (newChild x y z alpha beta (not (getType nodo))) (cons (getId nodo) (get nodo iPath)))
+    (newChild x y z alpha beta (not (getType nodo)))
   )
 )
 ;Genera todos los hijos de un nodo
@@ -36,28 +33,59 @@
 
 ;Devuelve si un hijo es o no un nodo hoja
 (define (isLeaf nodo)
-  (= 0 (getChildCount nodo))
+  (> 1 (getChildCount nodo))
 )
 
-(define (update nodo)
-  (define (update-max nodo)
-    (let [(val (min (getW nodo) (getAlpha nodo)))]
-      (setAlpha (setW nodo val) val))
-  )
-  (define (update-min nodo)
-    (let [(val (min (getW nodo) (getBeta nodo)))]
-      (setBeta (setW nodo val) val))
-  )
-  (define (update-leaf nodo)
+;Actualiza un nodo hijo, pone en su valor quien gana
+(define (update-leaf nodo)
     (define (value nodo) (if (getType nodo) 1 -1))
     (setW nodo (value nodo))
-  )
-  (if (isLeaf nodo)
-      (update-leaf nodo)
-      (if (getType nodo) (update-max nodo) (update-min nodo))
-  )
 )
 
+;Actualiza un nodo, su alpha o beta según corresponda, su peso y cambia su id por la de su mejor hijo
+(define (update root-node child)
+  (define (update-max root-node child);TOMAR MAYOR PESO
+    (let* [
+           (action (> (getAlpha root-node) (getW child)))
+           (val (if action (getAlpha root-node) (getW child)))
+           (id (if action (getId root-node) (getId child)))
+           (other (getBeta child))
+          ]
+      (setID (setBeta (setAlpha (setW root-node val) val) other) id)
+  ))
+  (define (update-min root-node child);TOMAR MENOR PESO
+    (let* [
+           (action (< (getBeta root-node) (getW child)))
+           (val (if action (getBeta root-node) (getW child)))
+           (id (if action (getId root-node) (getId child)))
+           (other (getAlpha child))
+          ]
+      (setID (setAlpha (setBeta (setW root-node val) val) other) id)
+  ))
+  (display "\nU")
+  (display (if (getType root-node) (update-max root-node child) (update-min root-node child)))
+  (if (getType root-node) (update-max root-node child) (update-min root-node child))
+)
+
+;MINIMAX
+(define (minmax nodo)
+  (define (profundidad node)
+    (display "\np")
+    (display node)
+    (if (isLeaf node) (update-leaf node) (anchura node (createChildren node)))
+  )
+  (define  (anchura root-node node-list)
+    (display "\nA")
+    (display root-node)
+    (display "\nL")
+    (display node-list)
+    (if (null? node-list) root-node
+        (if (>= (getAlpha root-node) (getBeta root-node)) root-node
+        ;(if #f root-node
+          (anchura (update root-node (profundidad (car node-list))) (cdr node-list)))
+   ))
+  (profundidad nodo)
+)
 
 
 

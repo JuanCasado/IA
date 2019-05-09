@@ -5,12 +5,11 @@
 
 ;POSICIONES DE LOS ELEMENTOS
 (define iId       1)
-(define iPath     2)
-(define iAlpha    3)
-(define iBeta     4)
-(define iWeight   5)
-(define iType     6)
-(define lenNodo   6)
+(define iAlpha    2)
+(define iBeta     3)
+(define iWeight   4)
+(define iType     5)
+(define lenNodo   5)
 ;Obtener un elemento de una lista en una posicion dada
 (define (get list index)
   (cond
@@ -51,6 +50,9 @@
 
 ;Devuelve la id de un nodo
 (define (getId nodo) (get nodo iId))
+(define (setID nodo ID)
+  (establish nodo ID iId)
+)
 
 (define (getX nodo)(car(getId nodo)))
 (define (getY nodo)(cadr(getId nodo)))
@@ -59,19 +61,6 @@
 (define (getNX nodo)(- (getX nodo) 1))
 (define (getNY nodo)(- (getY nodo) 1))
 (define (getNZ nodo)(- (getZ nodo) 1))
-
-;Devuelve una lista de caminos
-(define (getPath nodo) (get nodo iPath))
-
-;Pone una lista de caminos en un nodo
-(define (putPath nodo path)
-  (establish nodo path iPath)
-)
-
-;Aumenta la lista de caminos
-(define (extendPath nodo id)
-  (putPath nodo (reverse (cons id (reverse (get nodo iPath)))))
-)
 
 ;Devuelve el alpha de un nodo
 (define (getAlpha nodo) (get nodo iAlpha))
@@ -100,17 +89,14 @@
 ;Devuelve el tipo (MAX o MIN) de un nodo
 (define (getType nodo) (get nodo iType))
 
-;Devuelve cuantos hijos tiene un nodo
-(define (getChildAmount nodo)
-  (length (get nodo iPath))
-)
+(define (validate-number number) (if (< number 1) 1 number))
 
 ;Generador de hijos
 (define (newChild x y z alpha beta tipo)
-  (list (list x y z) '() alpha beta 0 tipo)
+  (list (list (validate-number x)  (validate-number y)  (validate-number z)) alpha beta 0 tipo)
 )
-(define (rootChild x y z tipo)
-  (list (list x y z) '() -inf.0 +inf.0 0 tipo)
+(define (rootChild x y z)
+  (list (list (validate-number x) (validate-number y) (validate-number z)) -inf.0 +inf.0 0 #t)
 )
 
 ;Pinta un nodo
