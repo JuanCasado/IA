@@ -13,19 +13,19 @@
       (string-downcase(read-line (current-input-port)))
 )
 
-<<<<<<< HEAD
-(define (remove node where ammout)
+(define (remove node where ammount)
+  (let [(formated-ammount (validate-number ammount))]
   (cond
-    [(string=? where "x") (rootChild (-(getX node) ammout) (getY node) (getZ node))]
-    [(string=? where "y") (rootChild (getX node) (-(getY node)) (-(getY node) ammout) (getZ node))]
-    [(string=? where "z") (rootChild (getX node) (getY node) (-(getZ node) ammout))]
+    [(string=? where "x") (rootChild (-(getX node) formated-ammount) (getY node) (getZ node))]
+    [(string=? where "y") (rootChild (getX node) (-(getY node) formated-ammount) (getZ node))]
+    [(string=? where "z") (rootChild (getX node) (getY node) (-(getZ node) formated-ammount))]
     [else  (rootChild (getX node) (getY node) (getZ node))] 
-  )
+  ))
 )
 
 (define (play)
   (define (ganador turno) 
-    (if turno (display "HA GANADO LA MAQUINA\n") (display "HA GANADO EL JUGADOR\n"))
+    (if turno (display "HA GANADO EL JUGADOR\n") (display "HA GANADO LA MAQUINA\n"))
   )
   (define (bucle-juego nodo turno)
     (if turno (display "TURNO DE LA MAQUINA\n") (display "TURNO DEL JUGADOR\n"))

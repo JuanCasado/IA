@@ -9,7 +9,8 @@
 (define iBeta     3)
 (define iWeight   4)
 (define iType     5)
-(define lenNodo   5)
+(define iBest     6)
+(define lenNodo   6)
 ;Obtener un elemento de una lista en una posicion dada
 (define (get list index)
   (cond
@@ -86,17 +87,29 @@
    (establish nodo w iWeight)
 )
 
+;Devuelve el mejor hijo de un nodo
+(define (getBest nodo) (get nodo iBest))
+
+;Establece el mejor hijo de un nodo
+(define (setBest nodo best)
+   (establish nodo best iBest)
+)
+
 ;Devuelve el tipo (MAX o MIN) de un nodo
 (define (getType nodo) (get nodo iType))
 
+;Hace que el id de un nodo sea un valor mayor o igual a 1
 (define (validate-number number) (if (< number 1) 1 number))
 
 ;Generador de hijos
 (define (newChild x y z alpha beta tipo)
-  (list (list (validate-number x)  (validate-number y)  (validate-number z)) alpha beta 0 tipo)
+  (list (list (validate-number x)  (validate-number y)  (validate-number z)) alpha beta 0 tipo '())
 )
 (define (rootChild x y z)
-  (list (list (validate-number x) (validate-number y) (validate-number z)) -inf.0 +inf.0 0 #t)
+  (list (list (validate-number x) (validate-number y) (validate-number z)) -inf.0 +inf.0 0 #f '())
+)
+(define (bestChild id)
+  (list id -inf.0 +inf.0 0 #f '())
 )
 
 ;Pinta un nodo
