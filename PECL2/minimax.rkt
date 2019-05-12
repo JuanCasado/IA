@@ -28,7 +28,7 @@
         (cons (nextChild nodo index) (_createChilds nodo (- index 1)))
     )
   )
-  (_createChilds nodo (getChildCount nodo))
+  (reverse(_createChilds nodo (getChildCount nodo)))
 )
 
 ;Devuelve si un hijo es o no un nodo hoja
@@ -38,9 +38,9 @@
 
 ;Actualiza un nodo hijo, pone en su valor quien gana
 (define (update-leaf nodo)
-  (define (value nodo) (if (getType nodo) 1 -1))
-  (display "\nR: ")
-  (display (setBest (setW nodo (value nodo)) (getId nodo)))
+  (define (value nodo) (if (getType nodo) -1 1))
+  ;(display "\nR: ")
+  ;(display (setBest (setW nodo (value nodo)) (getId nodo)))
   (setBest (setW nodo (value nodo)) (getId nodo))
 )
 
@@ -49,7 +49,7 @@
   (define (update-max root-node child);TOMAR MAYOR PESO
     (let* [
            (action (> (getAlpha root-node) (getW child)))
-           (val (if action (getAlpha root-node) (getW child)))
+           (val  (if action (getAlpha root-node) (getW child)))
            (best (if action (getBest root-node) (getId child)))
            (other (getBeta child))
           ]
@@ -58,40 +58,50 @@
   (define (update-min root-node child);TOMAR MENOR PESO
     (let* [
            (action (< (getBeta root-node) (getW child)))
-           (val (if action (getBeta root-node) (getW child)))
+           (val  (if action (getBeta root-node) (getW child)))
            (best (if action (getBest root-node) (getId child)))
            (other (getAlpha child))
           ]
       (setBest (setAlpha (setBeta (setW root-node val) val) other) best)
   ))
-  (display "\nO: ")
-  (display  root-node)
-  (display child)
-  (display "\nU: ")
-  (display (if (getType root-node) (update-max root-node child) (update-min root-node child)))
+  ;(display (if (getType root-node) "\nMAX" "\nMIN"))
+  ;(display "\nO: ")
+  ;(display  root-node)
+  ;(display child)
+  ;(display "\nU: ")
+  ;(display (if (getType root-node) (update-max root-node child) (update-min root-node child)))
   (if (getType root-node) (update-max root-node child) (update-min root-node child))
 )
 
 ;MINIMAX
 (define (minmax nodo)
+  ;(display "\nMINMAX")
+  (optimize nodo (lambda (root-node) #f))
+)
+;ALPHABETA
+(define (alphabeta nodo)
+  ;(display "\nALPHABETA")
+  (optimize nodo (lambda (root-node) (> (getAlpha root-node) (getBeta root-node))))
+)
+;OPTIMIZADOR
+(define (optimize nodo check)
   (define (profundidad node)
-    (display "\nP: ")
-    (display node)
+    ;(display "\nP: ")
+    ;(display node)
     (if (isLeaf node) (update-leaf node) (anchura node (createChildren node)))
   )
   (define  (anchura root-node node-list)
-    (display "\nA: ")
-    (display root-node)
-    (display "\nL: ")
-    (display node-list)
+    ;(display "\nA: ")
+    ;(display root-node)
+    ;(display "\nL: ")
+    ;(display node-list)
     (if (null? node-list) root-node
-        (if (>= (getAlpha root-node) (getBeta root-node)) root-node
-        ;(if #f root-node
+        (if (check root-node) root-node
           (anchura (update root-node (profundidad (car node-list))) (cdr node-list)))
    ))
   (let [(action (profundidad nodo))]
-    (display "\nF: ")
-    (display action)
+    ;(display "\nF: ")
+    ;(display action)
   (bestChild (getBest action)))
 )
 

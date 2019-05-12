@@ -106,10 +106,10 @@
   (list (list (validate-number x)  (validate-number y)  (validate-number z)) alpha beta 0 tipo '())
 )
 (define (rootChild x y z)
-  (list (list (validate-number x) (validate-number y) (validate-number z)) -inf.0 +inf.0 0 #f '())
+  (list (list (validate-number x) (validate-number y) (validate-number z)) -inf.0 +inf.0 0 #t '())
 )
 (define (bestChild id)
-  (list id -inf.0 +inf.0 0 #f '())
+  (list id -inf.0 +inf.0 0 #t '())
 )
 
 ;Pinta un nodo
