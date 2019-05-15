@@ -38,15 +38,14 @@
 )
 
 ;Actualiza un nodo hijo, pone en su valor quien gana
-(define (update-leaf nodo metadata)
+(define (update-leaf nodo)
   (define (value nodo) (if (getType nodo) -1 1))
-  (list
-   (setBest (setW nodo (value nodo)) (getId nodo))
-   (addLeaf metadata 1)
-))
+  (addLeaf 1)
+  (setBest (setW nodo (value nodo)) (getId nodo))   
+)
 
 ;Actualiza un nodo, su alpha o beta según corresponda, su peso y cambia su id por la de su mejor hijo
-(define (update root-node child metadata)
+(define (update root-node child)
   (define (update-max root-node child);TOMAR MAYOR PESO
     (let* [
            (action (or(> (getAlpha root-node) (getW child))
@@ -67,36 +66,27 @@
           ]
       (setBest (setAlpha (setBeta (setW root-node val) val) other) best)
   ))
-  (list
-   (if (getType root-node)
+  (addEvaluated 1)
+  (if (getType root-node)
         (update-max root-node child)
         (update-min root-node child)
-   )
-   (addEvaluated metadata 1)
-))
-
-;COUNT 1
-(define (count1 node)
-  (+ (if (= 1 (getX node)) 1 0) (if (= 1 (getY node)) 1 0) (if (= 1 (getZ node)) 1 0))
-)
-;SUMA PAR
-(define (sumEven nodo)
-  (even? (getChildCount nodo))
-)
-;SUMA IMPAR
-(define (sumOdd nodo)
-  (odd? (getChildCount nodo))
-)
-;SUMA IMPAR FUTURA
-(define (futureSumOdd nodo)
-  (and (odd? (getChildCount (rootChild (getX nodo) (getY nodo) 1))) (odd? (getChildCount (rootChild (getX nodo) (getZ nodo) 1))) (odd? (getChildCount (rootChild (getZ nodo) (getY nodo) 1))))
-)
-;SUMA PAR FUTURA
-(define (futureSumEven nodo)
-  (and (even? (getChildCount (rootChild (getX nodo) (getY nodo) 1))) (even? (getChildCount (rootChild (getX nodo) (getZ nodo) 1))) (even? (getChildCount (rootChild (getZ nodo) (getY nodo) 1))))
+  )   
 )
 
-(define (infere-leaf node metadata)
+;INFIERE EL VALOR DE UN NODO INFERIOR A (3 3 3)
+(define (infere-leaf node)
+  ;COUNT 1
+  (define (count1 node)
+    (+ (if (= 1 (getX node)) 1 0) (if (= 1 (getY node)) 1 0) (if (= 1 (getZ node)) 1 0))
+  )
+  ;SUMA PAR
+  (define (sumEven nodo)
+    (even? (getChildCount nodo))
+  )
+  ;SUMA IMPAR
+  (define (sumOdd nodo)
+    (odd? (getChildCount nodo))
+  )
   (let* [
          (count (count1 node))
          (result (cond
@@ -107,102 +97,89 @@
                   ))
          (finalNode (if result (winnerChild (getId node)) (looserChild (getId node))))
         ]
-  (list finalNode (addInfered metadata 1))
+    (addInfered 1)
+    finalNode
 ))
 
-;MUL NODE
-(define (mul-node node)
-  (* (getX node) (getY node) (getZ node))
-)
-;LOGARITMO EN BASE 2
-(define (log2 n)
-  (/ (log n) (log 2))
-)
-;MAX
-(define (max x y)
-  (if (> x y) x y)
-)
-
+(define ht (make-hash))
 ;MINIMAX
-(define (minmax nodo lazzy infer)
+(define (minmax nodo lazzy infer cache)
   (define (cuter root-node) #f)
+  (newMetadata)
+  (hash-clear! ht)
   (if lazzy
-      (optimize nodo cuter infer)
-      (optimize-not-lazzy nodo cuter infer)
+      (optimize nodo cuter infer cache)
+      (optimize-not-lazzy nodo cuter infer cache)
 ))
 ;ALPHABETA
-(define (alphabeta nodo lazzy infer)
+(define (alphabeta nodo lazzy infer cache)  
   (define (cuter root-node) (> (getAlpha root-node) (getBeta root-node)))
+  (newMetadata)
+  (hash-clear! ht)
   (if lazzy
-      (optimize nodo cuter infer)
-      (optimize-not-lazzy nodo cuter infer)
+      (optimize nodo cuter infer cache)
+      (optimize-not-lazzy nodo cuter infer cache)
 ))
 (define (inferable node)
   (and (<= (getX node) 3) (<= (getY node) 3) (<= (getZ node) 3))
 )
+
 ;OPTIMIZADOR CON LAZZY
-(define (optimize nodo check infer)
-  (define (profundidad node metadata depth)    
-    (if (isLeaf node)
-        (update-leaf node (setDepth metadata depth))
+(define (optimize nodo check infer cache)
+  (define (profundidad node depth)    
+    (setDepth depth)
+    (if (isLeaf node)        
+        (update-leaf node)
         (if (and infer (inferable node) (> depth 2))
-            (infere-leaf node (setDepth metadata depth))
-            (anchura node node 1 (addCreated metadata (getChildCount node)) depth)
-        )
+            (infere-leaf node)
+            (if cache 
+                (if (hash-has-key? ht node)
+                    (let [] (addHit 1) (hash-ref ht node))
+                    (let [(result(anchura node node 1 depth))]
+                      (hash-set! ht node result)
+                      (addCreated (getChildCount node))
+                      result
+                 ))
+            (let [] (addCreated (getChildCount node)) (anchura node node 1 depth))
+       ))
    ))
-  (define  (anchura original root-node expansion metadata depth)
-    (if (> expansion (getChildCount original)) (list root-node metadata)
-        (if (check root-node) (list root-node (addCut metadata 1))
-            (let* [
-                   (result1 (profundidad (nextChild original expansion) metadata (+ 1 depth)))
-                   (evaluatedNode (car result1))
-                   (newMetadata1 (cadr result1))
-                   (result2 (update root-node evaluatedNode newMetadata1))
-                   (updated (car result2))
-                   (newMetadata2 (cadr result2))
-                  ]
-              (anchura original updated (+ expansion 1) (addExpanded newMetadata2 1) depth)
-    ))))
-  (time (let* [
-         (result (profundidad nodo (newMetadata) 0))
-         (action (car result))
-         (metadata (cadr result))
-        ]
-    (printMetadata metadata)
-    (bestChild (getBest action))
-)))
+  (define  (anchura original root-node expansion depth)
+    (if (> expansion (getChildCount original)) root-node
+        (if (check root-node)
+            (let [] (addCut 1) root-node)
+            (let [] (addExpanded 1) (anchura original (update root-node (profundidad (nextChild original expansion) (+ 1 depth))) (+ expansion 1) depth))
+    )))
+  (time
+    (let [(best (bestChild (getBest (profundidad nodo 0))))] (printMetadata) best)
+))
 
 ;OPTIMIZADOR SIN LAZZY
-(define (optimize-not-lazzy nodo check infer)
-  (define (profundidad node metadata depth)    
-    (if (isLeaf node)
-        (update-leaf node (setDepth metadata depth))
+(define (optimize-not-lazzy nodo check infer cache)
+  (define (profundidad node depth)    
+    (setDepth depth)
+    (if (isLeaf node)        
+        (update-leaf node)
         (if (and infer (inferable node) (> depth 2))
-            (infere-leaf node (setDepth metadata depth))
-            (anchura node (createChildren node) (addCreated metadata (getChildCount node)) depth)
-        )
+            (infere-leaf node)
+            (if cache 
+                (if (hash-has-key? ht node)
+                    (let [] (addHit 1) (hash-ref ht node))
+                    (let [(result(anchura node (createChildren node) depth))]
+                      (addCreated (getChildCount node)) (hash-set! ht node result)
+                      result
+                 ))
+            (let [] (addCreated (getChildCount node)) (anchura node (createChildren node) depth))
+       ))
    ))
-  (define  (anchura root-node child-list metadata depth)
-    (if (null? child-list) (list root-node metadata)
-        (if (check root-node) (list root-node (addCut metadata 1))
-            (let* [
-                   (result1 (profundidad (car child-list) metadata (+ 1 depth)))
-                   (evaluatedNode (car result1))
-                   (newMetadata1 (cadr result1))
-                   (result2 (update root-node evaluatedNode newMetadata1))
-                   (updated (car result2))
-                   (newMetadata2 (cadr result2))
-                  ]
-              (anchura updated (cdr child-list) (addExpanded newMetadata2 1) depth)
-    ))))
-  (time (let* [
-         (result (profundidad nodo (newMetadata) 0))
-         (action (car result))
-         (metadata (cadr result))
-        ]
-    (printMetadata metadata)
-    (bestChild (getBest action))
-)))
+  (define  (anchura root-node child-list depth)
+    (if (null? child-list) root-node
+        (if (check root-node)
+            (let [] (addCut 1) root-node)
+            (let [] (addExpanded 1)  (anchura (update root-node (profundidad (car child-list) (+ 1 depth))) (cdr child-list) depth))
+    )))
+  (time
+    (let [(best (bestChild (getBest (profundidad nodo 0))))] (printMetadata) best)
+))
 
 
 
