@@ -19,7 +19,7 @@
     [else  (get (cdr list) (- index 1))]
   )
 )
-;Poner un elemento en una lista en una posicion dada
+;Poner un elemento en una lista en una posicion dada quitando lo que hubiera en esa posicion
 (define (set list elem index)
   (cond
     [(empty? list) elem]
@@ -35,6 +35,7 @@
     [else (cons (car list) (remove (cdr list) (- index 1)))]
    )
 )
+;Poner un elemento en una lista en una posicion dada SIN QUITAR lo que hubiera en esa posicion
 (define (put list elem index)
   (cond
     [(empty? list) elem]
@@ -42,6 +43,7 @@
     [else (cons (car list) (put (cdr list) elem (- index 1)))]
    )
 )
+;PUTO O SET SEGUN CORRESPONDA
 (define (establish list elem index)
   (if (< (length list) lenNodo)
       (put list elem index)
@@ -110,6 +112,12 @@
 )
 (define (bestChild id)
   (list id -inf.0 +inf.0 0 #t '())
+)
+(define (winnerChild id)
+  (list id -inf.0 +inf.0 1 #t id)
+)
+(define (looserChild id)
+  (list id -inf.0 +inf.0 -1 #t id)
 )
 
 ;Pinta un nodo

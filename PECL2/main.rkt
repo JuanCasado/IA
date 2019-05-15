@@ -16,29 +16,39 @@
 (define (remove node where ammount)
   (let [(formated-ammount (validate-number ammount))]
   (cond
-    [(string=? where "x") (rootChild (-(getX node) formated-ammount) (getY node) (getZ node))]
-    [(string=? where "y") (rootChild (getX node) (-(getY node) formated-ammount) (getZ node))]
-    [(string=? where "z") (rootChild (getX node) (getY node) (-(getZ node) formated-ammount))]
+    [(string=? where "x") (if (<= (getX node) 1) (remove node "y" ammount)(rootChild (-(getX node) formated-ammount) (getY node) (getZ node)))]
+    [(string=? where "y") (if (<= (getY node) 1) (remove node "z" ammount)(rootChild (getX node) (-(getY node) formated-ammount) (getZ node)))]
+    [(string=? where "z") (if (<= (getZ node) 1) (remove node "x" ammount)(rootChild (getX node) (getY node) (-(getZ node) formated-ammount)))]
     [else  (rootChild (getX node) (getY node) (getZ node))] 
   ))
 )
 
 (define (play)
   (define (ganador turno) 
-    (if turno (display "HA GANADO EL JUGADOR\n") (display "HA GANADO LA MAQUINA\n"))
+    (if turno (display "\nHA GANADO EL JUGADOR\n") (display "\nHA GANADO LA MAQUINA\n"))
   )
-  (define (bucle-juego tipo nodo turno)
-    (if turno (display "TURNO DE LA MAQUINA\n") (display "TURNO DEL JUGADOR\n"))
+  (define (bucle-juego min-max lazzy infer nodo turno)
+    (if turno (display "\nTURNO DE LA MAQUINA\n") (display "\nTURNO DEL JUGADOR\n"))
     (draw nodo)
     (if (isLeaf nodo)
         (ganador turno)
         (if turno
-            (if (string=? tipo "MINMAX")
-                (bucle-juego tipo (minmax nodo) (not turno))
-                (bucle-juego tipo (alphabeta nodo) (not turno)))
-            (bucle-juego tipo (remove nodo (ask-str "Introduce de dónde eliminar: ") (ask "Introduce cuanto quitar: ")) (not turno))
+            (if min-max
+                (bucle-juego min-max lazzy infer (minmax nodo lazzy infer) (not turno))
+                (bucle-juego min-max lazzy infer (alphabeta nodo lazzy infer) (not turno))
+            )
+            (let [(user (ask-str "Introduce de dónde eliminar: "))]
+              (if (string=? user "auto")
+                  (if min-max
+                      (bucle-juego min-max lazzy infer (minmax nodo lazzy infer) (not turno))
+                      (bucle-juego min-max lazzy infer (alphabeta nodo lazzy infer) (not turno))
+                  )
+                  (bucle-juego min-max lazzy infer (remove nodo user (ask "Introduce cuanto quitar: ")) (not turno))
+            ))
    )))
-   (bucle-juego (ask-str "MODO DE JUEGO (ALPHABETA|MINMAX)")
+   (bucle-juego (string=? (ask-str "MODO DE JUEGO (ALPHABETA|MINMAX)") "minimax")
+                (not (string=? (ask-str "USO DE MEMORIA (LAZZY|COMPLETE)") "complete"))
+                (string=? (ask-str "INFERENCIA DE NODOS TERMINALES (INFERE|LEAF)") "infere")
                 (rootChild (ask "Introduce la X: ") (ask "Introduce la Y: ") (ask "Introduce la Z: "))
                 (>(random) 0.5))
 )
