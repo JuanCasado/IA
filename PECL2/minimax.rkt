@@ -150,7 +150,7 @@
             (let [] (addExpanded 1) (anchura original (update root-node (profundidad (nextChild original expansion) (+ 1 depth))) (+ expansion 1) depth))
     )))
   (time
-    (let [(best (bestChild (getBest (profundidad nodo 0))))] (printMetadata) best)
+    (let [(best (bestChild (getBest (profundidad nodo 0))))] (printMetadata)(display "\nDIFERENT NODES: ") (display (hash-count ht)) (display "\n") best)
 ))
 
 ;OPTIMIZADOR SIN LAZZY
@@ -178,7 +178,7 @@
             (let [] (addExpanded 1)  (anchura (update root-node (profundidad (car child-list) (+ 1 depth))) (cdr child-list) depth))
     )))
   (time
-    (let [(best (bestChild (getBest (profundidad nodo 0))))] (printMetadata) best)
+    (let [(best (bestChild (getBest (profundidad nodo 0))))] (printMetadata) (display "\nDIFERENT NODES: ") (display (hash-count ht)) (display "\n") best)
 ))
 
 
