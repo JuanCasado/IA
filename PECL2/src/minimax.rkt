@@ -180,8 +180,3 @@
   (time
     (let [(best (bestChild (getBest (profundidad nodo 0))))] (printMetadata) (display "\nDIFERENT NODES: ") (display (hash-count ht)) (display "\n") best)
 ))
-
-
-
-
-

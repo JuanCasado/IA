@@ -1,0 +1,104 @@
+
+//dot G.dot -Tpng -o G.png
+
+graph G {
+  node [style="dashed"]
+  //node [style="filled"]
+  node [shape="circle", fillcolor="red"]
+  A_3_2_2 [style="filled"]
+  ABA_1_2_2
+  ABB_2_1_2
+  ABC_2_2_1
+  AAA_1_1_2 [style="filled"]
+  AAB_1_2_1 [style="filled"]
+  ACA_2_1_2
+  ACB_1_1_2
+  ACC_3_1_1
+  ADA_2_2_1
+  ADB_1_2_1
+  ADC_3_1_1
+  ABAAA_1_1_1 
+  ABABA_1_1_1
+  ABBAA_1_1_1
+  ABBBA_1_1_1
+  ABCAA_1_1_1
+  ABCBA_1_1_1
+  ACAAA_1_1_1
+  ACABA_1_1_1
+  ACCAA_1_1_1
+  ADAAA_1_1_1
+  ADABA_1_1_1
+  ADCAA_1_1_1
+  
+  node [shape="circle", fillcolor="blue"]
+  AB_2_2_2
+  AA_1_2_2 [style="filled"]
+  AC_3_1_2
+  AD_3_2_1
+  ABAA_1_1_2
+  ABAB_1_2_1
+  ABBA_1_1_2
+  ABBB_2_1_1
+  ABCA_1_2_1
+  ABCB_2_1_1
+  AAAA_1_1_1 [style="filled"]
+  AABA_1_1_1 [style="filled"]
+  ACAA_1_1_2
+  ACAB_2_1_1
+  ACBA_1_1_1
+  ACCA_2_1_1
+  ACCB_1_1_1
+  ADAA_1_2_1
+  ADAB_2_1_1
+  ADBA_1_1_1
+  ADCA_2_1_1
+  ADCB_1_1_1
+  
+
+  
+  AA_1_2_2   -- AAA_1_1_2
+  AA_1_2_2   -- AAB_1_2_1
+  AAA_1_1_2  -- AAAA_1_1_1
+  AAB_1_2_1  -- AABA_1_1_1
+  A_3_2_2    -- AB_2_2_2
+  AB_2_2_2   -- ABA_1_2_2
+  AB_2_2_2   -- ABB_2_1_2
+  AB_2_2_2   -- ABC_2_2_1
+  ABA_1_2_2  -- ABAA_1_1_2
+  ABA_1_2_2  -- ABAB_1_2_1
+  ABB_2_1_2  -- ABBA_1_1_2
+  ABB_2_1_2  -- ABBB_2_1_1
+  ABC_2_2_1  -- ABCA_1_2_1
+  ABC_2_2_1  -- ABCB_2_1_1
+  ABAA_1_1_2 -- ABAAA_1_1_1
+  ABAB_1_2_1 -- ABABA_1_1_1
+  ABBA_1_1_2 -- ABBAA_1_1_1
+  ABBB_2_1_1 -- ABBBA_1_1_1
+  ABCA_1_2_1 -- ABCAA_1_1_1
+  ABCB_2_1_1 -- ABCBA_1_1_1
+  A_3_2_2    -- AA_1_2_2
+  A_3_2_2    -- AC_3_1_2
+  AC_3_1_2   -- ACA_2_1_2
+  AC_3_1_2   -- ACB_1_1_2
+  AC_3_1_2   -- ACC_3_1_1
+  ACA_2_1_2  -- ACAA_1_1_2
+  ACB_1_1_2  -- ACBA_1_1_1
+  ACA_2_1_2  -- ACAB_2_1_1
+  ACC_3_1_1  -- ACCA_2_1_1
+  ACC_3_1_1  -- ACCB_1_1_1
+  ACAA_1_1_2 -- ACAAA_1_1_1
+  ACAB_2_1_1 -- ACABA_1_1_1
+  ACCA_2_1_1 -- ACCAA_1_1_1
+  A_3_2_2    -- AD_3_2_1
+  AD_3_2_1   -- ADA_2_2_1
+  AD_3_2_1   -- ADB_1_2_1
+  AD_3_2_1   -- ADC_3_1_1
+  ADA_2_2_1  -- ADAA_1_2_1
+  ADAA_1_2_1 -- ADAAA_1_1_1
+  ADA_2_2_1  -- ADAB_2_1_1
+  ADAB_2_1_1 -- ADABA_1_1_1
+  ADB_1_2_1  -- ADBA_1_1_1
+  ADC_3_1_1  -- ADCA_2_1_1
+  ADC_3_1_1  -- ADCB_1_1_1
+  ADCA_2_1_1 -- ADCAA_1_1_1
+}
