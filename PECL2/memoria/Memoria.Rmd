@@ -11,11 +11,11 @@ output: html_document
 
 ## Trabajo realizado
 
-Se ha implementado el juego solicitado con la funcionalidad solictada.
+Se ha implementado el juego solicitado con la funcionalidad solicitada.
 Sobre el juego se ha creado un agente inteligente que podrá tomar decisiones a cerca de la mejor jugada a realizar en cada uno de los estados del juego.
 Dicho agente utilizará minmax apoyado por distintos métodos de optimización: poda alphabeta, creación de nodos en lazzy, inferir valor de los nodos hoja de forma anticipada y uso de una caché para almacenar el valor de los nodos ya calculados.
 
-Las técnicas de optimización agilizan la toma de las decicsiones de modo que esto pueda hacerse en el menor tiempo posible teniendo como resultado poder ejecutar la búsqueda sobre bloques de mayor tamaño.
+Las técnicas de optimización agilizan la toma de las decisiones de modo que esto pueda hacerse en el menor tiempo posible teniendo como resultado poder ejecutar la búsqueda sobre bloques de mayor tamaño.
 De toda ejecución se recogen metadatos que nos informan sobre cómo ha sido realizada.
 
 Por último y para hacer la experiencia de juego más amena se ha creado un script de python con el que nos comunicaremos para que nos pinte los bloques en función de su tamaño.
@@ -25,7 +25,7 @@ Por último y para hacer la experiencia de juego más amena se ha creado un scri
 ## Optimización de la búsqueda
 
 Implementar una búsqueda mediante minmax fue sencillo.
-No obstante rápidamente nos dimos cuenta de que sin realizar alguna mejora para optimizar la búsqueda nos estábamos restringiendo a solo poder realizarla sobre espacios de búsqueda muy reducidos.
+No obstante, rápidamente nos dimos cuenta de que sin realizar alguna mejora para optimizar la búsqueda nos estábamos restringiendo a solo poder realizarla sobre espacios de búsqueda muy reducidos.
 Iterativamente y de forma modular fuimos implementando distintos métodos para optimizar dicha búsqueda para lograr reducir el coste en tiempo de realizarla.
 Se podrá elegir que optimizaciones usar y cuales no para cualquier ejecución.
 
@@ -41,38 +41,38 @@ Con ello mejoramos en gran medida el rendimiento aumentando el espacio de búsqu
 Pensando en maximizar los beneficios de la poda alphabeta decidimos crear los nodos del árbol de búsqueda en lazzy.
 Un nodo no se crearía hasta que no fuera a ser evaluado ya fuera en la búsqueda en anchura como en la búsqueda en profundidad, inicialmente y según la implementación de minmax tradicional esto solo se hace para la búsqueda en profundidad.
 Esto redujo nuestro uso de memoria y aumentó la velocidad de ejecución.
-No obstante no logramos aumentar el tamaño de bloque evaluable en menos de un minuto aplicando solo esta optimización.
+No obstante, no logramos aumentar el tamaño de bloque evaluable en menos de un minuto aplicando solo esta optimización.
 
 ### Inferir valor de los nodos hoja de forma anticipada
 
 Decidimos crear una función que predijera el valor de los nodos inferiores a bloques de $(3,3,3)$ mediante una heurística que analizara el bloque y nos dijera en función del tipo de nodo, MIN o MAX el valor para ese camino.
-Con esto logramos refucir la profundidad del árbol de búsqueda en 8 niveles por lo que el rendimiento aumentó considerablemente pudiendo evaluar en menos de un minuto bloques de $(6,6,6)$ por minmax y bloques de $(12,12,12)$ por alphabeta.
+Con esto logramos reducir la profundidad del árbol de búsqueda en 8 niveles por lo que el rendimiento aumentó considerablemente pudiendo evaluar en menos de un minuto bloques de $(6,6,6)$ por minmax y bloques de $(12,12,12)$ por alphabeta.
 
 ### Caché para almacenar el valor de los nodos ya calculados
 
-Finalmente optamos por crear una caché que nos permitiera almacenar los resultado de los ramas ya evaluadas.
+Finalmente optamos por crear una caché que nos permitiera almacenar los resultados de las ramas ya evaluadas.
 Dicha caché la creamos con una tabla hash que indexara los nodos para obtener el resultado de su evaluación.
-Gracias a ella logramos aumentar el tamaño de bloque esplorable hasta $(200,200,200)$ en menos de un minuto para alpahabeta.
+Gracias a ella logramos aumentar el tamaño de bloque explorable hasta $(200,200,200)$ en menos de un minuto para alpahabeta.
 
 ### Recogida de metadatos para cada ejecución
 
 Como método para ir comprobando que los resultados obtenidos al aplicar cada optimización mejoraban los resultados sin ella creamos un sistema para almacenar metadatos de una ejecución con el cual recogemos la siguiente información.
 
 * **CREATED**:        Cantidad de nodos del árbol que se han creado.
-* **LAZZY SAVINGS**:  Nodos que fueron creados pero que no se evaluaron. En caso de estar activa la optimización de crar nodos en lazzy este valor no solo indica los nodos no evaluados por haber sido podados si no los no creados, pues si no se evalúan no se llegan a crear. Valdrá 0 si no estamos en alphabeta pues minmax acaba evaluando todos los nodos del árbol.
+* **LAZZY SAVINGS**:  Nodos que fueron creados pero que no se evaluaron. En caso de estar activa la optimización de crear nodos en lazzy este valor no solo indica los nodos no evaluados por haber sido podados si no los no creados, pues si no se evalúan no se llegan a crear. Valdrá 0 si no estamos en alphabeta pues minmax acaba evaluando todos los nodos del árbol.
 * **EVALUATED**:      Nodos evaluados.
 * **CUTS**:           Cortes producidos por poda alphabeta.
 * **INFERED**:        Nodos cuyo valor ha sido inferido. Valdrá 0 si esta optimización no se aplica.
-* **CACHE HIT**:      Acirtos en la caché, camnos que ya fueron evaluados previamente. Valdrá 0 si no se usa dicha optimización.
+* **CACHE HIT**:      Aciertos en la caché, caminos que ya fueron evaluados previamente. Valdrá 0 si no se usa dicha optimización.
 * **LEAF**:           Nodos hoja del árbol de búsqueda.
 * **DEPTH**:          Profundidad máxima del árbol de búsqueda.
 * **DIFERENT NODES**: Cantidad de valores distintos almacenados en la caché, valdrá 0 si no se usa dicha optimización.
 
-La recogida de metadatos se implementa mediante una tabala hash.
+La recogida de metadatos se implementa mediante una tabla hash.
 
 \newpage
 
-## Resultados obtenidos de la optmización
+## Resultados obtenidos de la optimización
 
 Se muestran a continuación los ejemplos de algunas ejecuciones con su salida completa ante el mismo bloque variando la configuración del agente.
 ```(racket)
@@ -90,7 +90,7 @@ DIFERENT NODES: 0
 cpu time: 169 real time: 169 gc time: 37
 '((4 4 1) -inf.0 +inf.0 0 #t ())
 ```
-Este es el peor caso de ejecución posbile, en él no se aplica ningún método de optimización de los que se dispone, no obtante mediante él se obtendrá el mejor resultado, al igual que con el resto siempre que el espacio de búsqueda no sea demasiado grande en cuyo caso será muy lento.
+Este es el peor caso de ejecución posible, en él no se aplica ningún método de optimización de los que se dispone, no obstante mediante él se obtendrá el mejor resultado, al igual que con el resto siempre que el espacio de búsqueda no sea demasiado grande en cuyo caso será muy lento.
 ```(racket)
 (minmax (rootChild 4 4 4) #t #f #f)
 
@@ -106,7 +106,7 @@ DIFERENT NODES: 0
 cpu time: 155 real time: 156 gc time: 21
 '((4 4 1) -inf.0 +inf.0 0 #t ())
 ```
-Activando la creación de nodos en lazzy se siguen evaluando todos los nodos pues el método empleado es minmax, no obstante se ve que el tiempo de ejecución se reduce debido al ahorro en uso de memoria que se produce ya que los nodos se generan antes de ser usados en la búsqueda en anchura y no cuando son descubiertos.
+Activando la creación de nodos en lazzy se siguen evaluando todos los nodos pues el método empleado es minmax, no obstante, se ve que el tiempo de ejecución se reduce debido al ahorro en uso de memoria que se produce ya que los nodos se generan antes de ser usados en la búsqueda en anchura y no cuando son descubiertos.
 ```(racket)
 (minmax (rootChild 4 4 4) #f #t #f)
 
@@ -122,7 +122,7 @@ DIFERENT NODES: 0
 cpu time: 30 real time: 29 gc time: 0
 '((4 4 1) -inf.0 +inf.0 0 #t ())
 ```
-Aplicando la heurística de inferir los nodos raiz a partir del tamaño $(3, 3, 3)$ vemos como la profundidad de árbol se reduce, se evalúan menos nodos y la ejecución es mucho más rápida.
+Aplicando la heurística de inferir los nodos raíz a partir del tamaño $(3, 3, 3)$ vemos como la profundidad de árbol se reduce, se evalúan menos nodos y la ejecución es mucho más rápida.
 ```(racket)
 (minmax (rootChild 4 4 4) #f #f #t)
 
@@ -138,7 +138,7 @@ DIFERENT NODES: 118
 cpu time: 8 real time: 8 gc time: 0
 '((4 4 1) -inf.0 +inf.0 0 #t ())
 ```
-Los mejores resultado en rendimiento se obtienen con el uso de una caché que almacena el resultado de evaluar cada nodo ya que nos ahorramos evaluar varias veces los mismos nodos.
+Los mejores resultados en rendimiento se obtienen con el uso de una caché que almacena el resultado de evaluar cada nodo ya que nos ahorramos evaluar varias veces los mismos nodos.
 ```(racket)
 (minmax (rootChild 4 4 4) #t #t #t)
 
@@ -154,7 +154,7 @@ DIFERENT NODES: 67
 cpu time: 7 real time: 6 gc time: 0
 '((4 4 1) -inf.0 +inf.0 0 #t ())
 ```
-Mediante la ejecición con poda a pesar de no utilizar ninguna optimación adicional obtendremos de base mejores resultados que con minmax. Se debe mencionar que el resultado obtenido aunque equivalente al obtenido con minmax cambia de $(4, 4, 1)$ a $(1, 4, 4)$, esto se debe a que la ejecución de la poda pruduce resultados distintos al evaluar el árbol por un lado o por otro. Ya que en nuestro caso se obtenía mejores resultados experimentalmente al podar por la izquierda y no por la derecha alteramos el orden de evaluación de los nodos para fomentar la poda.
+Mediante la ejecución con poda a pesar de no utilizar ninguna optimación adicional obtendremos de base mejores resultados que con minmax. Se debe mencionar que el resultado obtenido aunque equivalente al obtenido con minmax cambia de $(4, 4, 1)$ a $(1, 4, 4)$, esto se debe a que la ejecución de la poda produce resultados distintos al evaluar el árbol por un lado o por otro. Ya que en nuestro caso se obtenía mejores resultados experimentalmente al podar por la izquierda y no por la derecha alteramos el orden de evaluación de los nodos para fomentar la poda.
 Se ven en el apartado LAZZY SAVINGS los nodos creados que no se llegaron a evaluar.
 ```(racket)
 (alphabeta (rootChild 4 4 4) #f #f #f)
@@ -203,7 +203,7 @@ DIFERENT NODES: 0
 cpu time: 3 real time: 3 gc time: 0
 '((1 4 4) -inf.0 +inf.0 0 #t ())
 ```
-Con el uso de la caché se reducen los nodo evaluados a pesar de que los nodos creados son más que al utilizar la heurística. Dicha reducción se magnigica exponencialmente para espacio de búsqueda mayores.
+Con el uso de la caché se reducen los nodos evaluados a pesar de que los nodos creados son más que al utilizar la heurística. Dicha reducción se magnifica exponencialmente para espacio de búsqueda mayores.
 ```(racket)
 (alphabeta (rootChild 4 4 4) #f #f #t)
 
@@ -219,7 +219,7 @@ DIFERENT NODES: 38
 cpu time: 1 real time: 2 gc time: 0
 '((1 4 4) -inf.0 +inf.0 0 #t ())
 ```
-Finalmente la mejor ejecición se logra activando todas las optimizaciones realizadas donde se reduce la cantidad de nodos evaluados de $24135$ sin ninguna optimización a tan solo $80$ haciendo por tanto que los espacios de búsqueda que pueda manejar el algoritmo sean mucho mayores en tiempos razonables.
+Finalmente, la mejor ejecución se logra activando todas las optimizaciones realizadas donde se reduce la cantidad de nodos evaluados de $24135$ sin ninguna optimización a tan solo $80$ haciendo por tanto que los espacios de búsqueda que pueda manejar el algoritmo sean mucho mayores en tiempos razonables.
 ```(racket)
 (alphabeta (rootChild 4 4 4) #t #t #t)
 
@@ -240,9 +240,9 @@ cpu time: 3 real time: 3 gc time: 0
 
 ## Comunicar Racket con python
 
-Para dibujar los bloques se ha creado un pqueño script de python cuya llamada debe realizarse con tres números que indicarán las dimensiones del bloque que se desea pintar.
-El escript creará una representación ASCII-art del bloque representado por sus dimensiones y lo verterá sobre la salida estandar.
-Para usar dichos script desde racket enlazaremos mediante una tubería dinamámica la salida estandar del programa racket en ejecución con la salida del script de python de modo que cuando este sea ejecutado mostrará su resultado en la misma consola que racket en ese momento lo estuviera haciendo.
+Para dibujar los bloques se ha creado un pequeño script de python cuya llamada debe realizarse con tres números que indicarán las dimensiones del bloque que se desea pintar.
+El script creará una representación ASCII-art del bloque representado por sus dimensiones y lo verterá sobre la salida estándar.
+Para usar dichos scripts desde racket enlazaremos mediante una tubería dinámica la salida estandar del programa racket en ejecución con la salida del script de python de modo que cuando este sea ejecutado mostrará su resultado en la misma consola que racket en ese momento lo estuviera haciendo.
 
 ```
         +-------+
@@ -286,13 +286,13 @@ Para usar dichos script desde racket enlazaremos mediante una tubería dinamámi
 
 ## Comenzar una partida
 
-El jugador al comenzar una partida podrá elegir podrá congigurar al agente de modo que este realize la búsqueda utilizando uno de los métodos creados para que esta se haga a mayor o menor velocidad.
+El jugador al comenzar una partida podrá elegir y podrá configurar al agente de modo que este realice la búsqueda utilizando uno de los métodos creados para que esta se haga a mayor o menor velocidad.
 Se elija la configuración que se elija el agente realizará una acción válida sobre el bloque de juego con la intención de ganar a su oponente.
 El juego se iniciará con la sentencia:
 ```(racket)
 (play)
 ```
-Tras la cual se le harán las siguiente cuestiones para configurar al agente:
+Tras la cual se le harán las siguientes cuestiones para configurar al agente:
 
 * **"MODO DE JUEGO (ALPHABETA|MINMAX)"** ante la que se espera una respuesta de *minimax* o *alphabeta*.
 * **"USO DE MEMORIA (LAZZY|COMPLETE)"** ante la que se espera una respuesta de *lazzy* o *complete*.
@@ -300,7 +300,7 @@ Tras la cual se le harán las siguiente cuestiones para configurar al agente:
 * **"INFERENCIA DE NODOS TERMINALES (INFERE|LEAF)"** ante la que se espera una respuesta de *infere* o *leaf*.
 
 En caso de introducir valores erróneos en alguna de las preguntas se aplicarán los valores por defecto de *alphabeta* *lazzy* *cache* e *infere*.
-Poesteriormrnte se preguntará por el estado inicial del bloque con el que se jugará:
+Posteriormente se preguntará por el estado inicial del bloque con el que se jugará:
 
 * **"Introduce la X: "** ante la que se espera un *número natural*.
 * **"Introduce la Y: "** ante la que se espera un *número natural*.
@@ -314,8 +314,8 @@ Adicionalmente se podrán utilizar las sentencias:
 (alphabeta (rootChild a b c) c1 c2 c3)
 ```
 Para ver el resultado que se obtendría si el estado del bloque fuera de dimensiones $a, b, c$ con $a, b, c \in [1, \infty]$.
-$c1, c2, c3$ hacen referencia a varibales booleanas $c1, c2, c3 \in [T, F]$ que configuran al ajente en su uso de memoria y en si este infiere el valor o no de los nodos.
-En caso de ser vertdaderas $T$ aplicarán el valor por defecto mencionado anteriomente y e caso de ser falsas aplican el otro valor correspondiente en cada caso.
+$c1, c2, c3$ hacen referencia a variables booleanas $c1, c2, c3 \in [T, F]$ que configuran al ajente en su uso de memoria y en si este infiere el valor o no de los nodos.
+En caso de ser verdaderas $T$ aplicarán el valor por defecto mencionado anteriormente y en caso de ser falsas aplican el otro valor correspondiente en cada caso.
 
 \newpage
 
@@ -467,12 +467,12 @@ Trabajar en el campo de la IA involucra tres aspectos clave.
 
 * Crear nuevas formas de poder manejar e inferir nueva información a partir del conocimiento existente. 
 * Crear algoritmos que permitan materializar y realizar esas manipulaciones de datos. 
-* Optimizar los algoritmos de modo que se puedan aplicar en tiempo reazonable o para que se puedan adaptar de forma rápida a cambios online sobre los datos de entrada.
+* Optimizar los algoritmos de modo que se puedan aplicar en tiempo razonable o para que se puedan adaptar de forma rápida a cambios online sobre los datos de entrada.
 
-A lo largo de esta práctica se ha hecho un estudio detallado del último apartado partiendo de idead preexistentes para los dos primeros.
-Se han implementado formas de mejorar y perfeccionar el rendiemnto en tiepo del algoritmo minmax para buscar la mejor jugada válida a realizar a partir de un bloque en el marco del juego definido.
+A lo largo de esta práctica se ha hecho un estudio detallado del último apartado partiendo de ideas preexistentes para los dos primeros.
+Se han implementado formas de mejorar y perfeccionar el rendimiento en tiempo del algoritmo minmax para buscar la mejor jugada válida a realizar a partir de un bloque en el marco del juego definido.
 
-Dichas optimizaciones nos han permitido poder buscar mejores jugadas para nodos de tamaño $(200, 200, 200)$ cuando inicalmente tras crear la primera versión del algoritmo era complicado llegar a evaluar nodos de tamaño $(5, 5, 5)$.
+Dichas optimizaciones nos han permitido poder buscar mejores jugadas para nodos de tamaño $(200, 200, 200)$ cuando inicialmente tras crear la primera versión del algoritmo era complicado llegar a evaluar nodos de tamaño $(5, 5, 5)$.
 
 ## Código
 
